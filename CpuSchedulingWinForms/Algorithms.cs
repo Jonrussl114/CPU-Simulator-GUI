@@ -340,6 +340,256 @@ namespace CpuSchedulingWinForms
                 MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
             }
         }
+        //Shortest Remaining Time First Scheduling goes here
+        public static List<ProcessResult> srtfAlgorithm(string userInput)
+        {
+            List<ProcessResult> results = new List<ProcessResult>();
+
+            int np = Convert.ToInt16(userInput);
+            int[] arrivalTime = new int[np];
+            int[] burstTime = new int[np];
+            int[] remainingTime = new int[np];
+            int[] predictedTime = new int[np];
+            int[] completionTime = new int[np];
+            int[] turnaroundTime = new int[np];
+            int[] waitingTime = new int[np];
+            bool[] isCompleted = new bool[np];
+            int averageWaitTime = 0;
+            int averageTurnaroundTime = 0;
+            int currentTime = 0;
+            int completed = 0;
+            int totalBurstTime = 0;
+            double cpuUtilization = 0;
+            double throughput = 0;
+
+            Random rnd = new Random();
+
+            DialogResult result = MessageBox.Show("Shortest Remaining Time First", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+            if (result == DialogResult.Yes)
+            {
+                for (int i = 0; i < np; i++)
+                {
+                    /**
+                    string arrivalInput =
+                            Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ",
+                                                               "Arrival time for P" + (i + 1),
+                                                               "",
+                                                               -1, -1);
+                    */
+                    //arrivalTime[i] = (int)Convert.ToInt64(arrivalInput);
+                    arrivalTime[i] = rnd.Next(0, 30);
+
+                    /**
+                    string burstInput =
+                            Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ",
+                                                               "Burst time for P" + (i + 1),
+                                                               "",
+                                                               -1, -1);
+                    */
+                    //burstTime[i] = (int)Convert.ToInt64(burstInput);
+                    burstTime[i] = rnd.Next(1, 30);
+
+                    remainingTime[i] = burstTime[i];
+
+                    /**
+                    string predictedInput =
+                            Microsoft.VisualBasic.Interaction.InputBox("Enter predicted time: ",
+                                                               "Predicted time for P" + (i + 1),
+                                                               "",
+                                                               -1, -1);
+                    */
+                    //predictedTime[i] = (int)Convert.ToInt64(predictedInput);
+                    predictedTime[i] = rnd.Next(1, 30);
+
+                }
+
+                while (completed != np)
+                {
+                    int shortest = -1;
+                    for (int i = 0; i < np; i++)
+                    {
+                        if (!isCompleted[i] && arrivalTime[i] <= currentTime)
+                        {
+                            if (shortest == -1 || remainingTime[i] < remainingTime[shortest])
+                            {
+                                shortest = i;
+                            }
+                        }
+                    }
+                    if (shortest == -1)
+                    {
+                        currentTime++;
+                        continue;
+                    }
+                    remainingTime[shortest]--;
+
+                    if (remainingTime[shortest] == 0)
+                    {
+                        completionTime[shortest] = currentTime + 1;
+                        turnaroundTime[shortest] = Math.Max(completionTime[shortest] - arrivalTime[shortest], 0);
+                        waitingTime[shortest] = Math.Max(turnaroundTime[shortest] - burstTime[shortest], 0);
+                        isCompleted[shortest] = true;
+                        completed++;
+                    }
+                    currentTime++;
+                }
+                for (int i = 0; i < np; i++)
+                {
+                    results.Add(new ProcessResult
+                    {
+                        ProcessID = "P" + (i+1),
+                        AT = arrivalTime[i],
+                        BT = burstTime[i],
+                        CT = completionTime[i],
+                        TT = turnaroundTime[i],
+                        WT = waitingTime[i],
+                        PT = predictedTime[i]
+                    }) ;
+                    //MessageBox.Show("Wait time for Process " + (i + 1) + " : " + (waitingTime[i]), "Wait time for Process " + (i + 1), MessageBoxButtons.OK);
+                    //MessageBox.Show("Turnaround time for Process " + (i + 1) + " : " + (turnaroundTime[i]), "Turnaround time for Process " + (i + 1), MessageBoxButtons.OK);
+                }
+
+                for (int i = 0; i < np; i++)
+                {
+                    averageWaitTime += waitingTime[i];
+                    averageTurnaroundTime += turnaroundTime[i];
+                    totalBurstTime += burstTime[i];
+                }
+                averageWaitTime = (int)Convert.ToInt32(averageWaitTime * 1.0 / np);
+                averageTurnaroundTime = (int)Convert.ToInt32(averageTurnaroundTime / np);
+                MessageBox.Show("Average wait time for " + np + " processes: " + averageWaitTime + " sec(s)", "", MessageBoxButtons.OK);
+                MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
+                if (currentTime > 0)
+                {
+                    cpuUtilization = (double)totalBurstTime / currentTime * 100;
+                    throughput = (double)np / currentTime;
+                }
+                MessageBox.Show($"CPU Utilization: {cpuUtilization.ToString("0.00")}%",
+                       "CPU Utilization", MessageBoxButtons.OK);
+                
+                MessageBox.Show($"Throughput: {throughput.ToString("0.00")} processes per time unit",
+                               "Throughput", MessageBoxButtons.OK);
+            }
+            return results;
+
+        }
+
+        ///New Algorithm Here
+        public static List<ProcessResult> hrrnAlgorithm(string userInput)
+        {
+            List<ProcessResult> results = new List<ProcessResult>();
+            int np = Convert.ToInt16(userInput);
+            int currentTime = 0;
+            int completedProcesses = 0;
+            int totalBurstTime = 0;
+            double cpuUtilization = 0;
+            double totalWaitingTime = 0;
+            double totalTurnAroundTime = 0;
+            double throughput = 0;
+            Random rnd = new Random();
+            DialogResult result = MessageBox.Show("The Highest Response Ratio Next", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+            if (result == DialogResult.Yes)
+            {
+                var processes = new List<int[]>();
+
+                for (int i = 0; i < np; i++)
+                {
+                    
+                    int arrivalTime = rnd.Next(0, 30);
+                    /**string arrivalInput =
+                            Microsoft.VisualBasic.Interaction.InputBox("Enter arrival time: ",
+                                                               "Arrival time for P" + (i + 1),
+                                                               "",
+                                                               -1, -1);
+                    */
+
+                    //int arrivalTime = (int)Convert.ToInt64(arrivalInput);
+
+                    /**string burstInput =
+                            Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ",
+                                                               "Burst time for P" + (i + 1),
+                                                               "",
+                                                               -1, -1);
+                    */
+                    int burstTime = rnd.Next(0, 30);
+                    //int burstTime = (int)Convert.ToInt64(burstInput);
+
+                    processes.Add(new int[] { i + 1, arrivalTime, burstTime, 0, 0 });
+                }
+                while (completedProcesses < np)
+                {
+                    double maxRR = -1;
+                    int selectedIndex = -1;
+
+                    for (int i = 0; i < processes.Count; i++)
+                    {
+                        var p = processes[i];
+                        if (p[4] == 1 || p[1] > currentTime)
+                        {
+                            continue;
+                        }
+                        int waitingTime = currentTime - p[1];
+                        double rRatio = (double) (waitingTime + p[2]) / p[2];
+                        if (rRatio > maxRR)
+                        {
+                            maxRR = rRatio;
+                            selectedIndex = i;
+                        }
+
+                    }
+                    if (selectedIndex == -1)
+                    {
+                        currentTime++;
+                        continue;
+                    }
+                    var selected = processes[selectedIndex];
+                    currentTime += selected[2];
+                    selected[3] = currentTime;
+                    selected[4] = 1;
+                    completedProcesses++;
+                }
+
+                foreach (var p in processes.OrderBy(p => p[0]))
+                {
+                    int turnaroundTime = p[3] - p[1];
+                    int waitTime = turnaroundTime - p[2];
+                    double rr = (double)(waitTime + p[2]) / p[2];
+                    totalWaitingTime += waitTime;
+                    totalTurnAroundTime += turnaroundTime;
+                    totalBurstTime += p[2];
+
+                    results.Add(new ProcessResult
+                    {
+                        ProcessID = "P" + p[0],
+                        AT = p[1],
+                        BT = p[2],
+                        CT = p[3],
+                        TT = turnaroundTime,
+                        WT = waitTime,
+                        RR = Math.Round(rr, 2)
+                    });
+
+                    //MessageBox.Show("Wait time for Process " + (p[0]) + " : " + (waitTime), "Wait time for Process " + (p[0]), MessageBoxButtons.OK);
+                    //MessageBox.Show("Turnaround time for Process " + (p[0]) + " : " + (turnaroundTime), "Turnaround time for Process " + (p[0]), MessageBoxButtons.OK);
+                }
+                MessageBox.Show("Average wait time for " + np + " processes: " + (totalWaitingTime / np) + " sec(s)", "", MessageBoxButtons.OK);
+                MessageBox.Show("Average turnaround time for " + np + " processes: " + (totalTurnAroundTime / np) + " sec(s)", "", MessageBoxButtons.OK);
+                if (currentTime > 0)
+                {
+                    cpuUtilization = (double)totalBurstTime / currentTime * 100;
+                    throughput = (double)np / currentTime;
+                }
+                MessageBox.Show($"CPU Utilization: {cpuUtilization.ToString("0.00")}%",
+                       "CPU Utilization", MessageBoxButtons.OK);
+
+                MessageBox.Show($"Throughput: {throughput.ToString("0.00")} processes per time unit",
+                               "Throughput", MessageBoxButtons.OK);
+
+            }
+            return results;
+        }
     }
 }
 
