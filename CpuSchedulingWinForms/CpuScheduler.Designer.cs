@@ -1,4 +1,4 @@
-﻿namespace CpuSchedulingWinForms
+namespace CpuSchedulingWinForms
 {
     partial class CpuScheduler
     {
@@ -49,6 +49,7 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.cpuSchedulerTab = new System.Windows.Forms.TabPage();
+            this.btnSRFT = new System.Windows.Forms.Button();
             this.btnRoundRobin = new System.Windows.Forms.Button();
             this.restartApp = new System.Windows.Forms.Label();
             this.btnPriority = new System.Windows.Forms.Button();
@@ -63,6 +64,9 @@
             this.pictureBoxCodeOutput = new System.Windows.Forms.PictureBox();
             this.btnBarcode = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnHRRN = new System.Windows.Forms.Button();
+            this.dgvResults = new System.Windows.Forms.DataGridView();
+            this.HideTable = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabSelection.SuspendLayout();
@@ -73,6 +77,7 @@
             this.cpuSchedulerTab.SuspendLayout();
             this.productTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCodeOutput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -122,7 +127,7 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 382);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 52);
+            this.label1.Size = new System.Drawing.Size(195, 92);
             this.label1.TabIndex = 3;
             this.label1.Text = "© 2024.\r\nAll Rights Reserved.\r\n\r\nCredits to Francis Nweke.\r\n";
             // 
@@ -202,10 +207,10 @@
             this.dashBoardTab.Controls.Add(this.pictureBox4);
             this.dashBoardTab.Controls.Add(this.pictureBox2);
             this.dashBoardTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dashBoardTab.Location = new System.Drawing.Point(4, 22);
+            this.dashBoardTab.Location = new System.Drawing.Point(4, 32);
             this.dashBoardTab.Name = "dashBoardTab";
             this.dashBoardTab.Padding = new System.Windows.Forms.Padding(3);
-            this.dashBoardTab.Size = new System.Drawing.Size(501, 413);
+            this.dashBoardTab.Size = new System.Drawing.Size(501, 403);
             this.dashBoardTab.TabIndex = 0;
             this.dashBoardTab.Text = "Dashboard";
             // 
@@ -234,7 +239,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(10, 262);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(94, 15);
+            this.label3.Size = new System.Drawing.Size(146, 25);
             this.label3.TabIndex = 8;
             this.label3.Text = "Memory Usage:";
             // 
@@ -251,7 +256,7 @@
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(7, 223);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 15);
+            this.label2.Size = new System.Drawing.Size(149, 25);
             this.label2.TabIndex = 6;
             this.label2.Text = "CPU Utilization:";
             // 
@@ -313,6 +318,10 @@
             this.cpuSchedulerTab.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.cpuSchedulerTab.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cpuSchedulerTab.BackgroundImage")));
             this.cpuSchedulerTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cpuSchedulerTab.Controls.Add(this.HideTable);
+            this.cpuSchedulerTab.Controls.Add(this.dgvResults);
+            this.cpuSchedulerTab.Controls.Add(this.btnHRRN);
+            this.cpuSchedulerTab.Controls.Add(this.btnSRFT);
             this.cpuSchedulerTab.Controls.Add(this.btnRoundRobin);
             this.cpuSchedulerTab.Controls.Add(this.restartApp);
             this.cpuSchedulerTab.Controls.Add(this.btnPriority);
@@ -321,12 +330,24 @@
             this.cpuSchedulerTab.Controls.Add(this.txtProcess);
             this.cpuSchedulerTab.Controls.Add(this.labelProcess);
             this.cpuSchedulerTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cpuSchedulerTab.Location = new System.Drawing.Point(4, 22);
+            this.cpuSchedulerTab.Location = new System.Drawing.Point(4, 32);
             this.cpuSchedulerTab.Name = "cpuSchedulerTab";
             this.cpuSchedulerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.cpuSchedulerTab.Size = new System.Drawing.Size(501, 413);
+            this.cpuSchedulerTab.Size = new System.Drawing.Size(501, 403);
             this.cpuSchedulerTab.TabIndex = 1;
             this.cpuSchedulerTab.Text = "CPU Scheduler";
+            // 
+            // btnSRFT
+            // 
+            this.btnSRFT.BackColor = System.Drawing.SystemColors.Info;
+            this.btnSRFT.Location = new System.Drawing.Point(16, 329);
+            this.btnSRFT.Name = "btnSRFT";
+            this.btnSRFT.Size = new System.Drawing.Size(99, 45);
+            this.btnSRFT.TabIndex = 13;
+            this.btnSRFT.Text = "Shortest Remaining";
+            this.btnSRFT.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSRFT.UseVisualStyleBackColor = false;
+            this.btnSRFT.Click += new System.EventHandler(this.btnSRFT_Click);
             // 
             // btnRoundRobin
             // 
@@ -355,7 +376,7 @@
             this.restartApp.ForeColor = System.Drawing.Color.Lime;
             this.restartApp.Location = new System.Drawing.Point(362, 379);
             this.restartApp.Name = "restartApp";
-            this.restartApp.Size = new System.Drawing.Size(113, 15);
+            this.restartApp.Size = new System.Drawing.Size(177, 25);
             this.restartApp.TabIndex = 11;
             this.restartApp.Text = "Restart Application";
             this.restartApp.Click += new System.EventHandler(this.restartApp_Click);
@@ -433,7 +454,7 @@
             this.labelProcess.AutoSize = true;
             this.labelProcess.Location = new System.Drawing.Point(29, 91);
             this.labelProcess.Name = "labelProcess";
-            this.labelProcess.Size = new System.Drawing.Size(148, 15);
+            this.labelProcess.Size = new System.Drawing.Size(207, 22);
             this.labelProcess.TabIndex = 6;
             this.labelProcess.Text = "Number of Processes:";
             // 
@@ -445,9 +466,9 @@
             this.productTab.Controls.Add(this.txtCodeInput);
             this.productTab.Controls.Add(this.pictureBoxCodeOutput);
             this.productTab.Controls.Add(this.btnBarcode);
-            this.productTab.Location = new System.Drawing.Point(4, 22);
+            this.productTab.Location = new System.Drawing.Point(4, 32);
             this.productTab.Name = "productTab";
-            this.productTab.Size = new System.Drawing.Size(501, 413);
+            this.productTab.Size = new System.Drawing.Size(501, 403);
             this.productTab.TabIndex = 2;
             this.productTab.Text = "Product Code ";
             // 
@@ -521,6 +542,43 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnHRRN
+            // 
+            this.btnHRRN.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.btnHRRN.Location = new System.Drawing.Point(121, 329);
+            this.btnHRRN.Name = "btnHRRN";
+            this.btnHRRN.Size = new System.Drawing.Size(111, 45);
+            this.btnHRRN.TabIndex = 16;
+            this.btnHRRN.Text = "HRRN";
+            this.btnHRRN.UseVisualStyleBackColor = false;
+            this.btnHRRN.Click += new System.EventHandler(this.btnHRRN_Click);
+            // 
+            // dgvResults
+            // 
+            this.dgvResults.AllowUserToOrderColumns = true;
+            this.dgvResults.BackgroundColor = System.Drawing.Color.Azure;
+            this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvResults.Location = new System.Drawing.Point(16, 73);
+            this.dgvResults.Name = "dgvResults";
+            this.dgvResults.RowHeadersWidth = 62;
+            this.dgvResults.Size = new System.Drawing.Size(465, 212);
+            this.dgvResults.TabIndex = 17;
+            this.dgvResults.Visible = false;
+            this.dgvResults.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvResults_CellContentClick);
+            // 
+            // HideTable
+            // 
+            this.HideTable.AutoSize = true;
+            this.HideTable.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.HideTable.Location = new System.Drawing.Point(406, 44);
+            this.HideTable.Name = "HideTable";
+            this.HideTable.Size = new System.Drawing.Size(75, 32);
+            this.HideTable.TabIndex = 5;
+            this.HideTable.Text = "Hide";
+            this.HideTable.UseVisualStyleBackColor = false;
+            this.HideTable.Visible = false;
+            this.HideTable.Click += new System.EventHandler(this.HideTable_Click);
+            // 
             // CpuScheduler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -548,6 +606,7 @@
             this.productTab.ResumeLayout(false);
             this.productTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCodeOutput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -587,5 +646,9 @@
         private System.Windows.Forms.Button btnRoundRobin;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnSRFT;
+        private System.Windows.Forms.Button btnHRRN;
+        private System.Windows.Forms.DataGridView dgvResults;
+        private System.Windows.Forms.Button HideTable;
     }
 }
