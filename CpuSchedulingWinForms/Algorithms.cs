@@ -7,6 +7,18 @@ using System.Windows.Forms;
 
 namespace CpuSchedulingWinForms
 {
+    public class ProcessResult
+    {
+        public string ProcessID { get; set; }
+        public int AT { get; set; }
+        public int BT { get; set; }
+        public int CT { get; set; }
+        public int TT { get; set; }
+        public int WT { get; set; }
+        public double RR { get; set; }
+        public int PT { get; set; }
+    }
+
     public static class Algorithms
     {
         public static void fcfsAlgorithm(string userInput)
@@ -168,25 +180,28 @@ namespace CpuSchedulingWinForms
                 double awt;
                 int temp = 0;
                 bool found = false;
+                Random rnd = new Random();
                 for (num = 0; num <= np - 1; num++)
                 {
+                    /**
                     string input =
                         Microsoft.VisualBasic.Interaction.InputBox("Enter burst time: ",
                                                            "Burst time for P" + (num + 1),
                                                            "",
                                                            -1, -1);
-
-                    bp[num] = Convert.ToInt64(input);
+                    */
+                    bp[num] = rnd.Next(0, 30);
                 }
                 for (num = 0; num <= np - 1; num++)
                 {
+                    /**
                     string input2 =
                         Microsoft.VisualBasic.Interaction.InputBox("Enter priority: ",
                                                            "Priority for P" + (num + 1),
                                                            "",
                                                            -1, -1);
-
-                    p[num] = Convert.ToInt16(input2);
+                    */
+                    p[num] = rnd.Next(0, 30);
                 }
                 for (num = 0; num <= np - 1; num++)
                 {
@@ -213,7 +228,7 @@ namespace CpuSchedulingWinForms
                             if (sp[num] == p[x] && found == false)
                             {
                                 wtp[num] = 0;
-                                MessageBox.Show("Waiting time for P" + (x + 1) + " = " + wtp[num], "Waiting time", MessageBoxButtons.OK);
+                                //MessageBox.Show("Waiting time for P" + (x + 1) + " = " + wtp[num], "Waiting time", MessageBoxButtons.OK);
                                 //Console.WriteLine("\nWaiting time for P" + (x + 1) + " = " + wtp[num]);
                                 temp = x;
                                 p[x] = 0;
@@ -229,7 +244,7 @@ namespace CpuSchedulingWinForms
                             if (sp[num] == p[x] && found == false)
                             {
                                 wtp[num] = wtp[num - 1] + bp[temp];
-                                MessageBox.Show("Waiting time for P" + (x + 1) + " = " + wtp[num], "Waiting time", MessageBoxButtons.OK);
+                                //MessageBox.Show("Waiting time for P" + (x + 1) + " = " + wtp[num], "Waiting time", MessageBoxButtons.OK);
                                 //Console.WriteLine("\nWaiting time for P" + (x + 1) + " = " + wtp[num]);
                                 temp = x;
                                 p[x] = 0;
@@ -246,6 +261,21 @@ namespace CpuSchedulingWinForms
                 MessageBox.Show("Average waiting time for " + np + " processes" + " = " + (awt = twt / np) + " sec(s)", "Average waiting time", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Console.WriteLine("\n\nAverage waiting time: " + (awt = twt / np));
                 //Console.ReadLine();
+                for (int i = 0; i < np - 1; i++)
+                {
+                    /**
+                    results.Add(new ProcessResult
+                    {
+                        ProcessID = "P" + (i + 1),
+                        AT = bp[i],
+                        BT = burstTime[i],
+                        CT = completionTime[i],
+                        TT = turnaroundTime[i],
+                        WT = waitingTime[i],
+                        PT = predictedTime[i]
+                    });
+                    */
+                }
             }
             else
             {
@@ -340,6 +370,7 @@ namespace CpuSchedulingWinForms
                 MessageBox.Show("Average turnaround time for " + np + " processes: " + averageTurnaroundTime + " sec(s)", "", MessageBoxButtons.OK);
             }
         }
+
         //Shortest Remaining Time First Scheduling goes here
         public static List<ProcessResult> srtfAlgorithm(string userInput)
         {

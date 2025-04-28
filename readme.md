@@ -1,12 +1,6 @@
-## CPU-Simulator GUI
-A grahical user interface application with these components: CPU Simulator, QR code and Barcode Generator.
-
-
-## Usage
-
-```
-Please install the font: "IDAutomationHC39M Free Version". You can find it in the project root folder.
-```
-
-## License
-This project is licensed under the terms of the [MIT license](https://choosealicense.com/licenses/mit/).
+Added two new algorithms: Shortest Remaining Time First (SRTF) and Highest Response Ratio (HRRN).
+These are added in with their respective buttons.
+How to run the project:
+1. Open Visual Studio and select to "Open a project or solution"
+2. Select "CPUSchedulingWinForms.csproj and open
+3. Press the start button at the top of the page and the application should open
